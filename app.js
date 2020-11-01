@@ -1,26 +1,25 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const app = express();
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var blogRouter = require('./routes/blog');
-var createRouter = require('./routes/CRUD/create');
-var readRouter = require('./routes/CRUD/read');
-var updateRouter = require('./routes/CRUD/update');
-var deleteRouter = require('./routes/CRUD/delete');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const blogRouter = require('./routes/blog');
+const adminRouter = require('./routes/admin')
+
+const createRouter = require('./routes/CRUD/create');
+const readRouter = require('./routes/CRUD/read');
+const updateRouter = require('./routes/CRUD/update');
+const deleteRouter = require('./routes/CRUD/delete');
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional\
-var firebase = require("firebase-admin");
-/*var firebase1 = require('firebase/app');
-require('firebase/auth');
-require('firebase/database');*/
-var serviceAccount = require("./public/serviceAccountKey");
-
-var firebaseConfig = {
+const firebase = require("firebase-admin");
+const serviceAccount = require("./public/serviceAccountKey");
+const firebaseConfig = {
   apiKey: "AIzaSyDHjjhVUCp7IXb2HXSoxM9uiKgSPXAff_c",
   authDomain: "blogandarticles-6e198.firebaseapp.com",
   databaseURL: "https://blogandarticles-6e198.firebaseio.com",
@@ -40,7 +39,8 @@ require("firebase/firestore");
 
 
 
-var app = express();
+app.disable('etag');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -55,51 +55,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/blog', blogRouter);
+app.use('/admin', adminRouter);
+
 app.use('/create',createRouter);
 app.use('/read',readRouter);
 app.use('/update',updateRouter);
 app.use('/delete',deleteRouter);
-
-
-/*app.get('/create', (request, response) => {
-  /*
-  * This is for realtime database, however does not work for now
-  * const ref = firebase.database().ref("/baslik");
-
-  // Attach an asynchronous callback to read the data at our posts reference
-  ref.on("value", function (snapshot) {
-    console.log(snapshot.val());
-  }, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
-  });
-
-   * Create function for firebase firestore, demo version.
-
-  (async () => {
-    try {
-      var db = firebase.firestore();
-      await db.collection('itemsaa').doc('/' + 'Baslik' + '/')
-          .create({item: "alaCi"});
-      return response.status(200).send();
-    } catch (error) {
-      console.log(error);
-      return response.status(500).send(error);
-    }
-  })();
-
-} );*/
-
-app.get('/read', (request, response) =>{
-
-});
-
-app.get('/update', (request, response) =>{
-
-})
-
-app.get('/delete', (request, response) => {
-
-});
 
 
 
